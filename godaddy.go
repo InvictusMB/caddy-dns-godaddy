@@ -37,19 +37,20 @@ func (p *Provider) Provision(ctx caddy.Context) error {
 func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 	for d.Next() {
 		if d.NextArg() {
-			return d.ArgErr()
-		}
-		for nesting := d.Nesting(); d.NextBlock(nesting); {
-			switch d.Val() {
-			case "api_token":
-				if d.NextArg() {
-					p.Provider.APIToken = d.Val()
+			p.Provider.APIToken = d.Val()
+		} else {
+			for nesting := d.Nesting(); d.NextBlock(nesting); {
+				switch d.Val() {
+				case "api_token":
+					if d.NextArg() {
+						p.Provider.APIToken = d.Val()
+					}
+					if d.NextArg() {
+						return d.ArgErr()
+					}
+				default:
+					return d.Errf("unrecognized subdirective '%s'", d.Val())
 				}
-				if d.NextArg() {
-					return d.ArgErr()
-				}
-			default:
-				return d.Errf("unrecognized subdirective '%s'", d.Val())
 			}
 		}
 	}
