@@ -1,4 +1,4 @@
-module github.com/caddy-dns/godaddy
+module github.com/InvictusMB/caddy-dns-godaddy
 
 go 1.24.0
 
